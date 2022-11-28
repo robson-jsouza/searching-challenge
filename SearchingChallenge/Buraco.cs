@@ -1,6 +1,8 @@
-﻿namespace SearchingChallenge
+﻿using SearchingChallenge.Interfaces;
+
+namespace SearchingChallenge
 {
-    public class Buraco
+    public class Buraco : IBuraco
     {
         public int ObterQuantidadeBuracos(int[,] matriz, int linhas, int colunas)
         {

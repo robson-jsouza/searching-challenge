@@ -1,6 +1,8 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
+using Microsoft.Extensions.DependencyInjection;
 using SearchingChallenge;
+using SearchingChallenge.Interfaces;
 
 int linhas = 4;
 int colunas = 5;
@@ -35,8 +37,19 @@ matriz[3, 2] = 1;
 matriz[3, 3] = 1;
 matriz[3, 4] = 0;
 
-var buraco = new Buraco();
+var serviceCollection = new ServiceCollection();
+ConfigureServices(serviceCollection);
+var serviceProvider = serviceCollection.BuildServiceProvider();
 
-var quantidadeBuracos = buraco.ObterQuantidadeBuracos(matriz, linhas, colunas);
+var eventService = serviceProvider.GetService<IBuraco>();
+
+Console.WriteLine("Iniciando a aplicação");
+
+var quantidadeBuracos = eventService?.ObterQuantidadeBuracos(matriz, linhas, colunas);
 
 Console.WriteLine($"Buracos: {quantidadeBuracos}");
+
+static void ConfigureServices(IServiceCollection services)
+{
+    services.AddScoped<IBuraco, Buraco>();
+}
