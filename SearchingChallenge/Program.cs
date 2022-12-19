@@ -53,3 +53,5 @@ static void ConfigureServices(IServiceCollection services)
 {
     services.AddScoped<IBuraco, Buraco>();
 }
+
+// TODO: estudar life cycles da injeção de dependência (scoped, transient...)
