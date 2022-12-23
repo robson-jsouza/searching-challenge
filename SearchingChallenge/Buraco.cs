@@ -49,8 +49,6 @@ namespace SearchingChallenge
                         sequenciaZeros += BuscaVizinhosHorizontal(matriz, posicaoInicial, linhas, colunas, visitados, DirecaoEnum.ParaFrente);
                         sequenciaZeros += BuscaVizinhosHorizontal(matriz, posicaoInicial, linhas, colunas, visitados, DirecaoEnum.ParaTras);
                     }
-
-                    sequenciaZeros++;
                 }
             }
 
@@ -90,15 +88,21 @@ namespace SearchingChallenge
             if (direcao == DirecaoEnum.ParaFrente)
             {
                 // TODO: isso deveria ir para uma função
-                //posicaoAtual.J = posicaoAtual.J + 1 > colunas - 1 ? 0 : posicaoAtual.J + 1;
-                //posicaoAtual.I = posicaoAtual.J == 0 ? (posicaoAtual.I + 1 > linhas - 1 ? 0 : posicaoAtual.I + 1) : posicaoAtual.I;
+                int i = posicaoAtual.I;
+                int j = posicaoAtual.J;
+                j = j + 1 > colunas - 1 ? 0 : j + 1;
+                i = j == 0 ? (i + 1 > linhas - 1 ? 0 : i + 1) : i;
+                posicaoAtual = new Posicao { I = i, J = j };
                 sequenciaZeros += BuscaVizinhosHorizontalParaFrente(matriz, posicaoAtual, linhas, colunas, visitados);
             }
             else if (direcao == DirecaoEnum.ParaTras)
             {
                 // TODO: isso deveria ir para uma função
-                //posicaoAtual.J = posicaoAtual.J - 1 < 0 ? colunas - 1 : posicaoAtual.J - 1;
-                //posicaoAtual.I = posicaoAtual.J == colunas - 1 ? (posicaoAtual.I - 1 < 0 ? linhas - 1 : posicaoAtual.I - 1) : posicaoAtual.I;
+                int i = posicaoAtual.I;
+                int j = posicaoAtual.J;
+                j = j - 1 < 0 ? colunas - 1 : j - 1;
+                i = j == colunas - 1 ? (i - 1 < 0 ? linhas - 1 : i - 1) : i;
+                posicaoAtual = new Posicao { I = i, J = j };
                 sequenciaZeros += BuscaVizinhosHorizontalParaTras(matriz, posicaoAtual, linhas, colunas, visitados);
             }
 

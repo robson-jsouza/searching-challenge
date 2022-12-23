@@ -44,7 +44,7 @@ namespace SearchChallengeTests
             var buraco = new Buraco();
             var quantidadeBuracos = buraco.ObterQuantidadeBuracos(matriz, linhas, colunas);
 
-            Assert.AreEqual(2, quantidadeBuracos);
+            Assert.AreEqual(3, quantidadeBuracos);
         }
 
         [TestMethod]
@@ -188,7 +188,7 @@ namespace SearchChallengeTests
             var buraco = new Buraco();
             var quantidadeZeros = buraco.BuscaVizinhosHorizontal(matriz, posicaoAtual, linhas, colunas, visitados, DirecaoEnum.ParaFrente);
 
-            Assert.AreEqual(2, quantidadeZeros);
+            Assert.AreEqual(1, quantidadeZeros);
         }
 
         [TestMethod]
@@ -250,7 +250,7 @@ namespace SearchChallengeTests
             var buraco = new Buraco();
             var quantidadeZeros = buraco.BuscaVizinhosHorizontal(matriz, posicaoAtual, linhas, colunas, visitados, DirecaoEnum.ParaFrente);
 
-            Assert.AreEqual(10, quantidadeZeros);
+            Assert.AreEqual(9, quantidadeZeros);
         }
 
         [TestMethod]
@@ -309,7 +309,7 @@ namespace SearchChallengeTests
             var buraco = new Buraco();
             var quantidadeZeros = buraco.BuscaVizinhosHorizontal(matriz, posicaoAtual, linhas, colunas, visitados, DirecaoEnum.ParaFrente);
 
-            Assert.AreEqual(11, quantidadeZeros);
+            Assert.AreEqual(10, quantidadeZeros);
         }
 
         [TestMethod]
@@ -368,7 +368,7 @@ namespace SearchChallengeTests
             var buraco = new Buraco();
             var quantidadeZeros = buraco.BuscaVizinhosHorizontal(matriz, posicaoAtual, linhas, colunas, visitados, DirecaoEnum.ParaTras);
 
-            Assert.AreEqual(11, quantidadeZeros);
+            Assert.AreEqual(10, quantidadeZeros);
         }
 
         [TestMethod]
@@ -428,9 +428,13 @@ namespace SearchChallengeTests
             var buraco = new Buraco();
             var quantidadeZeros = buraco.BuscaVizinhosHorizontal(matriz, posicaoAtual, linhas, colunas, visitados, DirecaoEnum.ParaTras);
 
-            Assert.AreEqual(12, quantidadeZeros);
+            Assert.AreEqual(11, quantidadeZeros);
         }
 
-        // TODO: fazer pra frente e pra tras na vertical
+        [TestMethod]
+        public void EncontraSequenciaZerosVerticalTest()
+        {
+            throw new Exception("implementar pra frente e pra trás na vertical");
+        }
     }
 }
