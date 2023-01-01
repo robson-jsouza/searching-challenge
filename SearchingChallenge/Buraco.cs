@@ -40,7 +40,7 @@ namespace SearchingChallenge
                             buracos++;
 
                         sequenciaZeros = 0;
-                        visitados.Add(new Posicao { I = i, J = j });
+                        visitados.Add(posicaoInicial);
                         continue;
                     }
                     else if (valor == 0)
@@ -61,20 +61,42 @@ namespace SearchingChallenge
             // incrementar quantidade de buracos e marcar posições visitadas
             int sequenciaZeros = 0;
             int buracos = 0;
+            List<Posicao> visitados = new List<Posicao>();
             for (int i = 0; i < colunas; i++)
             {
                 for (int j = 0; j < linhas; j++)
                 {
-                    if (matriz[j, i] == 1)
+                    //if (matriz[j, i] == 1)
+                    //{
+                    //    if (sequenciaZeros > 1)
+                    //        buracos++;
+
+                    //    sequenciaZeros = 0;
+                    //    continue;
+                    //}
+
+                    //sequenciaZeros++;
+                    var posicaoInicial = new Posicao { I = j, J = i };
+                    if (visitados.Contains(posicaoInicial))
+                        continue;
+
+                    var valor = matriz[j, i];
+
+                    if (valor == 1)
                     {
                         if (sequenciaZeros > 1)
                             buracos++;
 
                         sequenciaZeros = 0;
+                        visitados.Add(posicaoInicial);
                         continue;
                     }
-
-                    sequenciaZeros++;
+                    else if (valor == 0)
+                    {
+                        sequenciaZeros++;
+                        sequenciaZeros += BuscaVizinhosVertical(matriz, posicaoInicial, linhas, colunas, visitados, DirecaoEnum.ParaFrente);
+                        sequenciaZeros += BuscaVizinhosVertical(matriz, posicaoInicial, linhas, colunas, visitados, DirecaoEnum.ParaTras);
+                    }
                 }
             }
 
@@ -142,6 +164,94 @@ namespace SearchingChallenge
         }
 
         public int BuscaVizinhosHorizontalParaTras(int[,] matriz, Posicao posicaoAtual, int linhas, int colunas, List<Posicao> visitados)
+        {
+            int sequenciaZeros = 0;
+            int i = posicaoAtual.I;
+            int j = posicaoAtual.J;
+            var posicaoInicial = new Posicao { I = i, J = j };
+
+            do
+            {
+                for (int indice = j; indice >= 0; indice--)
+                {
+                    var valor = matriz[i, indice];
+                    CalculaSequenciaDeZeros(valor, ref sequenciaZeros, visitados, posicaoInicial);
+
+                    if (valor == 1)
+                        return sequenciaZeros;
+
+                    j = j - 1 < 0 ? colunas - 1 : j - 1;
+                    i = j == colunas - 1 ? (i - 1 < 0 ? linhas - 1 : i - 1) : i;
+                    posicaoInicial = new Posicao { I = i, J = j };
+                }
+
+                //posicaoInicial.J = posicaoInicial.J - 1 < 0 ? colunas - 1 : posicaoInicial.J - 1;
+                //posicaoInicial.I = posicaoInicial.J == colunas - 1 ? (posicaoInicial.I - 1 < 0 ? linhas - 1 : posicaoInicial.I - 1) : posicaoInicial.I;
+                //i = i - 1 == -1 ? linhas - 1 : i - 1;
+                //j = colunas - 1;
+                //posicaoInicial = new Posicao { I = i, J = j };
+            } while (!visitados.Any(v => v.I == posicaoInicial.I && v.J == posicaoInicial.J));
+
+            return sequenciaZeros;
+        }
+
+        public int BuscaVizinhosVertical(int[,] matriz, Posicao posicaoAtual, int linhas, int colunas, List<Posicao> visitados, DirecaoEnum direcao)
+        {
+            int sequenciaZeros = 0;
+
+            if (direcao == DirecaoEnum.ParaFrente)
+            {
+                // TODO: isso deveria ir para uma função
+                int i = posicaoAtual.I;
+                int j = posicaoAtual.J;
+                //j = j + 1 > colunas - 1 ? 0 : j + 1;
+                //i = j == 0 ? (i + 1 > linhas - 1 ? 0 : i + 1) : i;
+                i = i + 1 >= linhas ? 0 : i + 1;
+                j = i + 1 >= linhas ? (j + 1 >= colunas ? 0 : j + 1) : j;
+                posicaoAtual = new Posicao { I = i, J = j };
+                sequenciaZeros += BuscaVizinhosVerticalParaFrente(matriz, posicaoAtual, linhas, colunas, visitados);
+            }
+            else if (direcao == DirecaoEnum.ParaTras)
+            {
+                // TODO: isso deveria ir para uma função
+                int i = posicaoAtual.I;
+                int j = posicaoAtual.J;
+                j = j - 1 < 0 ? colunas - 1 : j - 1;
+                i = j == colunas - 1 ? (i - 1 < 0 ? linhas - 1 : i - 1) : i;
+                posicaoAtual = new Posicao { I = i, J = j };
+                sequenciaZeros += BuscaVizinhosVerticalParaTras(matriz, posicaoAtual, linhas, colunas, visitados);
+            }
+
+            return sequenciaZeros;
+        }
+
+        public int BuscaVizinhosVerticalParaFrente(int[,] matriz, Posicao posicaoAtual, int linhas, int colunas, List<Posicao> visitados)
+        {
+            int sequenciaZeros = 0;
+            int i = posicaoAtual.I;
+            int j = posicaoAtual.J;
+            var posicaoInicial = new Posicao { I = i, J = j };
+
+            do
+            {
+                for (int indice = j; indice < colunas; indice++)
+                {
+                    var valor = matriz[i, indice];
+                    CalculaSequenciaDeZeros(valor, ref sequenciaZeros, visitados, posicaoInicial);
+
+                    if (valor == 1)
+                        return sequenciaZeros;
+
+                    j = i + 1 >= linhas ? (j + 1 >= colunas ? 0 : j + 1) : j;
+                    i = i + 1 >= linhas ? 0 : i + 1;
+                    posicaoInicial = new Posicao { I = i, J = j };
+                }
+            } while (!visitados.Any(v => v.I == posicaoInicial.I && v.J == posicaoInicial.J));
+
+            return sequenciaZeros;
+        }
+
+        public int BuscaVizinhosVerticalParaTras(int[,] matriz, Posicao posicaoAtual, int linhas, int colunas, List<Posicao> visitados)
         {
             int sequenciaZeros = 0;
             int i = posicaoAtual.I;

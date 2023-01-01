@@ -6,7 +6,7 @@ namespace SearchChallengeTests
     public class BuracoTests
     {
         [TestMethod]
-        public void EncontraDoisBuracosVerticalHorizontalTest()
+        public void EncontraTresBuracosVerticalHorizontalTest()
         {
             int linhas = 4;
             int colunas = 5;
@@ -48,7 +48,7 @@ namespace SearchChallengeTests
         }
 
         [TestMethod]
-        public void EncontraUmBuracoHorizontalTest()
+        public void EncontraDoisBuracosHorizontalTest()
         {
             int linhas = 4;
             int colunas = 5;
@@ -435,6 +435,129 @@ namespace SearchChallengeTests
         public void EncontraSequenciaZerosVerticalTest()
         {
             throw new Exception("implementar pra frente e pra trás na vertical");
+        }
+
+        [TestMethod]
+        public void EncontraSequenciaZerosVerticalParaFrenteTest()
+        {
+            int linhas = 4;
+            int colunas = 5;
+            int[,] matriz = new int[4, 5];
+            int i = 1;
+            int j = 2;
+            var posicaoAtual = new Posicao { I = i, J = j };
+            List<Posicao> visitados = new List<Posicao>()
+            {
+                // coluna 1
+                new Posicao { I = 0, J = 0, },
+                new Posicao { I = 1, J = 0, },
+                new Posicao { I = 2, J = 0, },
+                new Posicao { I = 3, J = 0, },
+                // coluna 2
+                new Posicao { I = 0, J = 1, },
+                new Posicao { I = 1, J = 1, },
+                new Posicao { I = 2, J = 1, },
+                new Posicao { I = 3, J = 1, },
+                // coluna 3
+                new Posicao { I = 0, J = 2, },
+            };
+
+            // 0   1   1   1   1
+            // 1   1   0   1   0
+            // 0   0   0   1   1
+            // 1   1   1   1   0
+
+            matriz[0, 0] = 0;
+            matriz[0, 1] = 1;
+            matriz[0, 2] = 1;
+            matriz[0, 3] = 1;
+            matriz[0, 4] = 1;
+
+            matriz[1, 0] = 1;
+            matriz[1, 1] = 1;
+            matriz[1, 2] = 0;
+            matriz[1, 3] = 1;
+            matriz[1, 4] = 0;
+
+            matriz[2, 0] = 0;
+            matriz[2, 1] = 0;
+            matriz[2, 2] = 0;
+            matriz[2, 3] = 1;
+            matriz[2, 4] = 1;
+
+            matriz[3, 0] = 1;
+            matriz[3, 1] = 1;
+            matriz[3, 2] = 1;
+            matriz[3, 3] = 1;
+            matriz[3, 4] = 0;
+
+            var buraco = new Buraco();
+            var quantidadeZeros = buraco.BuscaVizinhosVertical(matriz, posicaoAtual, linhas, colunas, visitados, DirecaoEnum.ParaFrente);
+
+            Assert.AreEqual(1, quantidadeZeros);
+        }
+
+        [TestMethod]
+        public void EncontraSequenciaZerosVerticalParaFrenteFinalizandoNaPrimeiraPosicaoJaVisitadaDaMatrizTest()
+        {
+            int linhas = 4;
+            int colunas = 5;
+            int[,] matriz = new int[4, 5];
+            int i = 0;
+            int j = 3;
+            var posicaoAtual = new Posicao { I = i, J = j };
+            List<Posicao> visitados = new List<Posicao>
+            {
+                // coluna 1
+                new Posicao { I = 0, J = 0, },
+                new Posicao { I = 1, J = 0, },
+                new Posicao { I = 2, J = 0, },
+                new Posicao { I = 3, J = 0, },
+                // coluna 2
+                new Posicao { I = 0, J = 1, },
+                new Posicao { I = 1, J = 1, },
+                new Posicao { I = 2, J = 1, },
+                new Posicao { I = 3, J = 1, },
+                // coluna 3
+                new Posicao { I = 0, J = 2, },
+                new Posicao { I = 1, J = 2, },
+                new Posicao { I = 2, J = 2, },
+                new Posicao { I = 3, J = 2, },
+            };
+
+            // 0   1   1   0   0
+            // 1   1   1   0   0
+            // 0   0   0   0   0
+            // 0   0   0   0   0
+
+            matriz[0, 0] = 0;
+            matriz[0, 1] = 1;
+            matriz[0, 2] = 1;
+            matriz[0, 3] = 0;
+            matriz[0, 4] = 0;
+
+            matriz[1, 0] = 1;
+            matriz[1, 1] = 1;
+            matriz[1, 2] = 1;
+            matriz[1, 3] = 0;
+            matriz[1, 4] = 0;
+
+            matriz[2, 0] = 0;
+            matriz[2, 1] = 0;
+            matriz[2, 2] = 0;
+            matriz[2, 3] = 0;
+            matriz[2, 4] = 0;
+
+            matriz[3, 0] = 0;
+            matriz[3, 1] = 0;
+            matriz[3, 2] = 0;
+            matriz[3, 3] = 0;
+            matriz[3, 4] = 0;
+
+            var buraco = new Buraco();
+            var quantidadeZeros = buraco.BuscaVizinhosVertical(matriz, posicaoAtual, linhas, colunas, visitados, DirecaoEnum.ParaFrente);
+
+            Assert.AreEqual(7, quantidadeZeros);
         }
     }
 }
